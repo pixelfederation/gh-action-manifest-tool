@@ -1,0 +1,30 @@
+name: "Manifest tool"
+description: "tool or multiarch images"
+branding:
+  icon: anchor
+  color: orange
+inputs:
+  username:
+    description: "Username used for authentication to the registry"
+    required: false
+  password:
+    description: "Password used for authentication to the registry"
+    required: false
+  platforms:
+    description: "Which platforms you want to push for in the form OS/ARCH,OS/ARCH,.. eg. `linux/amd64,linux/arm64`"
+    required: false
+    default: "linux/amd64"
+  template:
+    description: "Image repo:tag source for inputs by replacing the placeholders OS, ARCH and VARIANT with platform input"
+    required: true
+  target:
+    description: "Specifies the target image repo:tag that will be the manifest list entry in the registry."
+    required: true
+  manifest_tool_bin:
+    description: "Specify binary to use, should be left to autodetected platform"
+    required: false
+
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
