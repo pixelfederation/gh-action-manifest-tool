@@ -1,25 +1,19 @@
 FROM alpine:3.15.0
-ARG MANIFEST_TOOL_VERSION=2.0.0
+
+LABEL repository="https://github.com/pixelfederation/gh-action-manifest"
+LABEL maintainer="Tomas Hulata<thulata@pixelfederation.com>"
+
+ARG MANIFEST_TOOL_VERSION=2.0.3
+ARG MANIFEST_TOOL_SHA256=78971079cc0d8eddd90751fe6d8bf9b10ecf73a5476103d3673bf39b5da961d3
 
 SHELL ["/bin/sh", "-c"]
 
+COPY entrypoint.sh arch.sh /
 
-RUN mkdir -p /tmp/tool && \
-    wget -O /tmp/tool/manifest-tool.tgz \
-    https://github.com/estesp/manifest-tool/releases/download/v2.0.0/binaries-manifest-tool-${MANIFEST_TOOL_VERSION}.tar.gz && \
-    cd /tmp/tool/ && tar -xvzf manifest-tool.tgz
-
-
-COPY entrypoint.sh /
-COPY arch.sh /
-
-RUN . /arch.sh && \
-    cp /tmp/tool/manifest-tool* /bin/ && \
-    cp /tmp/tool/manifest-tool-${OS}-${ARCH} /bin/manifest-tool && \
-    chmod +x /bin/manifest-tool* && \
-    chmod +x /entrypoint.sh
+RUN . /arch.sh && mkdir -p /tmp/tool && \
+    wget -O /tmp/binaries-manifest-tool-${MANIFEST_TOOL_VERSION}.tar.gz https://github.com/estesp/manifest-tool/releases/download/v${MANIFEST_TOOL_VERSION}/binaries-manifest-tool-${MANIFEST_TOOL_VERSION}.tar.gz && \
+    echo "${MANIFEST_TOOL_SHA256}  /tmp/binaries-manifest-tool-${MANIFEST_TOOL_VERSION}.tar.gz" | sha256sum -c && \
+    tar -xvzf /tmp/binaries-manifest-tool-${MANIFEST_TOOL_VERSION}.tar.gz -C /tmp/tool/ && cp /tmp/tool/manifest-tool-${OS}-${ARCH} /bin/manifest-tool && \
+    rm -rf /tmp/* && chmod +x /bin/manifest-tool /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
-
-LABEL repository="https://github.com/pixelfederation/gh-action-manifest" \
-    maintainer="Tomas Hulata<thulata@pixelederation.com>"
