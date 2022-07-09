@@ -1,10 +1,17 @@
-FROM alpine:3.15.0
+FROM debian:bullseye-slim
 
 LABEL repository="https://github.com/pixelfederation/gh-action-manifest"
 LABEL maintainer="Tomas Hulata<thulata@pixelfederation.com>"
 
 ARG MANIFEST_TOOL_VERSION=2.0.3
 ARG MANIFEST_TOOL_SHA256=78971079cc0d8eddd90751fe6d8bf9b10ecf73a5476103d3673bf39b5da961d3
+
+RUN apt update -y && \
+    apt install --no-install-recommends -y amazon-ecr-credential-helper wget && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p ~/.docker
+ADD config.json ~/.docker/
 
 SHELL ["/bin/sh", "-c"]
 
