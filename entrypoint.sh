@@ -21,6 +21,9 @@ ensure "${TARGET}" "target"
 PWDARGS=""
 if [ ! -z "${INPUT_USERNAME}" ] && [ ! -z "${INPUT_PASSWORD}" ]; then
     PWDARGS="--username ${INPUT_USERNAME} --password ${INPUT_PASSWORD}"
+else
+    mkdir -p ~/.docker/
+    echo '{"credsStore":"ecr-login"}' > ~/.docker/config.json
 fi
 
 $MANIFEST_TOOL_BIN $PWDARGS \

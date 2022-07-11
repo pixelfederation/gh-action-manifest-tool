@@ -10,9 +10,6 @@ RUN apt update -y && \
     apt install --no-install-recommends -y amazon-ecr-credential-helper wget && \
     rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p ~/.docker
-ADD config.json ~/.docker/
-
 SHELL ["/bin/sh", "-c"]
 
 COPY entrypoint.sh arch.sh /
