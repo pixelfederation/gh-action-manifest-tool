@@ -10,23 +10,20 @@ function ensure() {
 }
 
 MANIFEST_TOOL_BIN=${INPUT_MANIFEST_TOOL_BIN:-/bin/manifest-tool}
-USERNAME=${INPUT_USERNAME:-$GITHUB_ACTOR}
-PASSWORD=${INPUT_PASSWORD:-$GITHUB_TOKEN}
 PLATFORMS=${INPUT_PLATFORMS}
 TEMPLATE=${INPUT_TEMPLATE}
 TARGET=${INPUT_TARGET}
 
-
-ensure "${USERNAME}" "username"
-ensure "${PASSWORD}" "password"
 ensure "${PLATFORMS}" "platform"
 ensure "${TEMPLATE}" "template"
 ensure "${TARGET}" "target"
 
+PWDARGS=""
+if [ ! -z "${INPUT_USERNAME}" ] && [ ! -z "${INPUT_PASSWORD}" ]; then
+    PWDARGS="--username ${INPUT_USERNAME} --password ${INPUT_PASSWORD}"
+fi
 
-$MANIFEST_TOOL_BIN \
-          --username ${USERNAME} \
-          --password ${PASSWORD} \
+$MANIFEST_TOOL_BIN $PWDARGS \
           push from-args --platforms ${PLATFORMS} \
           --template ${TEMPLATE} \
           --target ${TARGET}
