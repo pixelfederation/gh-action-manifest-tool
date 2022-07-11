@@ -24,6 +24,10 @@ if [ ! -z "${INPUT_USERNAME}" ] && [ ! -z "${INPUT_PASSWORD}" ]; then
 else
     mkdir -p ~/.docker/
     echo '{"credsStore":"ecr-login"}' > ~/.docker/config.json
+    echo ~/.docker/config.json
+    ls -la ~/.docker/config.json
+    cat ~/.docker/config.json
+    sleep 3600
 fi
 
 $MANIFEST_TOOL_BIN $PWDARGS \
