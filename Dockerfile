@@ -3,8 +3,8 @@ FROM debian:bullseye-slim
 LABEL repository="https://github.com/pixelfederation/gh-action-manifest"
 LABEL maintainer="Tomas Hulata<thulata@pixelfederation.com>"
 
-ARG MANIFEST_TOOL_VERSION=2.0.3
-ARG MANIFEST_TOOL_SHA256=78971079cc0d8eddd90751fe6d8bf9b10ecf73a5476103d3673bf39b5da961d3
+ARG MANIFEST_TOOL_VERSION=2.1.6
+ARG MANIFEST_TOOL_SHA256=585b1e9a78912d99590cf769cfa9b42348a920453d06f37b42f07078c0abc0ad
 
 RUN apt update -y && \
     apt install --no-install-recommends -y amazon-ecr-credential-helper wget && \
